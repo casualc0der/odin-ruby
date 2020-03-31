@@ -1,18 +1,17 @@
 #frozen_string_literal: true
 
 def stock_picker(arr)
-
   selling_margin = arr.min - arr.max
   best_days_to_buy_sell = []
-
-  arr.combination(2).to_a.map do |x| 
-    if x[1]-x[0] > selling_margin
-      selling_margin = x[1]-x[0]
-      best_days_to_buy_sell = [arr.index(x[0]), arr.index(x[1])]
-    else
-      next
+  
+    arr.combination(2).to_a.map do |x| 
+      if x[1]-x[0] > selling_margin
+        selling_margin = x[1]-x[0]
+        best_days_to_buy_sell = [arr.index(x[0]), arr.index(x[1])]
+      else
+        next
+      end
     end
-  end
   best_days_to_buy_sell
 end
 
