@@ -1,6 +1,6 @@
 #frozen_string_literal: true
 
-def caeser(word, shift=1)
+def caeser(word, shift=0)
 
   cipher = word.split('').map! do |letter|
     if letter.match(/[A-Z]/)
