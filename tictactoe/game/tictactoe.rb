@@ -18,31 +18,30 @@ class TicTacToe
     player1.toggle_turn
     
       until Winconditon.winner
-      while player1.turn
-        begin 
-          puts "player 1 make a move"
-          x = gets.chomp
-          ##if you convert a char to int it will always equal 0!
-          ##also, clean up this mess!!
-          board.insert_symbol('X', x)
-          player1.toggle_turn
-          player2.toggle_turn
-        rescue ArgumentError
+        while player1.turn
+          begin 
+            puts "player 1 make a move"
+            x = gets.chomp.to_i
+            board.insert_symbol('X', x)
+            puts board.surface
+            Winconditon.winner(board.squares)
+            player1.toggle_turn
+            player2.toggle_turn
+          rescue ArgumentError
+          end
         end
-      end
-        puts board.surface
-        break if Winconditon.winner(board.squares)
-        puts "player 2 make a move"
-        o = gets.chomp.to_i
-        board.insert_symbol('O', o)
-        puts board.surface
-        break if Winconditon.winner(board.squares)
-      end
-
-
-   
-
-
-
+        while player2.turn
+          begin 
+            puts "player 2 make a move"
+            o = gets.chomp.to_i
+            board.insert_symbol('O', o)
+            puts board.surface
+            Winconditon.winner(board.squares)
+            player2.toggle_turn
+            player1.toggle_turn
+          rescue ArgumentError
+          end
+        end
+    end
   end
 end

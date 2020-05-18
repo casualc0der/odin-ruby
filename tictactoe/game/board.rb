@@ -7,10 +7,10 @@ class Board
   end
   def insert_symbol(symbol, square_pos)
     raise ArgumentError unless @squares[square_pos] == nil
-    raise ArgumentError unless square_pos >= 0 && square_pos <= 8
+    raise ArgumentError unless square_pos >= 1 && square_pos <= 9
     sanitize_symbol = symbol.upcase
     raise ArgumentError unless sanitize_symbol == 'X' || sanitize_symbol == 'O'
-    @squares[square_pos] = sanitize_symbol
+    @squares[square_pos-1] = sanitize_symbol
   end
   def surface 
     x = @squares.map {|x| cube_creator(x)}
