@@ -1,7 +1,7 @@
 require 'pry'
 
 class Winconditon
-  def self.winner(arr)
+  def self.winner(arr=[])
     player1 = arr.each_index.select {|x| arr[x] == 'X'}
     player2 = arr.each_index.select {|o| arr[o] == 'O'}
     return "p1" if self.winning_combos(player1)

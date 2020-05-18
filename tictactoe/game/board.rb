@@ -27,14 +27,14 @@ class Board
   end
 end
 
-x = Board.new
-x.insert_symbol('X', 0)
-x.insert_symbol('O', 1)
-x.insert_symbol('X', 2)
-x.insert_symbol('X', 3)
-x.insert_symbol('O', 4)
-x.insert_symbol('X', 5)
-x.insert_symbol('X', 6)
-x.insert_symbol('O', 7)
-x.insert_symbol('X', 8)
-puts x.surface
+# x = Board.new
+# x.insert_symbol('X', 0)
+# x.insert_symbol('O', 1)
+# x.insert_symbol('X', 2)
+# x.insert_symbol('X', 3)
+# x.insert_symbol('O', 4)
+# x.insert_symbol('X', 5)
+# x.insert_symbol('X', 6)
+# x.insert_symbol('O', 7)
+# x.insert_symbol('X', 8)
+# puts x.surface
