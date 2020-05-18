@@ -1,9 +1,7 @@
 require 'minitest/autorun'
 require_relative '../game/player'
 
-
 class PlayerTest < Minitest::Test
-
   def setup
     @player1 = Player.new("Edd")
     @player2 = Player.new("Tom")
@@ -24,5 +22,13 @@ class PlayerTest < Minitest::Test
     assert_equal 1, @player1.points
     @player1.reset_points
     assert_equal 0, @player1.points
+  end
+  def test_turn_flag
+    assert_equal false, @player1.turn
+  end
+  def test_turn_toggle
+    assert_equal false, @player1.turn
+    @player1.toggle_turn
+    assert_equal true, @player1.turn
   end
 end
