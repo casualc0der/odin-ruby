@@ -3,12 +3,10 @@ require_relative '../game/wincondition'
 require_relative '../game/board'
 
 class WinconditonTest < Minitest::Test
-
   def setup
     @board = Board.new
   end
   def test_nil_if_no_winner_on_blank_board
-    #all squares are currently nil
     assert_nil Winconditon.winner(@board.squares)
   end
   def test_nil_if_no_winner_on_full_board
@@ -71,6 +69,5 @@ class WinconditonTest < Minitest::Test
     @board.insert_symbol('X', 4)
     @board.insert_symbol('X', 8)
     assert_equal 'p1', Winconditon.winner(@board.squares)
-  end
-
+  end #all squares are currently nil
 end

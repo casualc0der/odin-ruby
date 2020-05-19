@@ -1,9 +1,7 @@
 require 'minitest/autorun'
 require_relative '../game/board'
 
-class BoardTest < Minitest::Test
-  #Do we need an instance of the board or a static class?
-
+class BoardTest < Minitest::Test #Do we need an instance of the board or a static class?
   def setup
     @board = Board.new
   end
