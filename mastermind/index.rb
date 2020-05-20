@@ -14,15 +14,11 @@ end
 
 class Human
   def guessprotocol(wc, bc, turn)
-    player = []
-    player << gets.chomp.to_i
-    player << gets.chomp.to_i
-    player << gets.chomp.to_i
-    player << gets.chomp.to_i
+    player = ""
+    player << gets.chomp
     return player
   end
 end
-
 
 class Cpu
 attr_reader :previous_guesses
@@ -33,63 +29,98 @@ attr_accessor :sets
     @sets.delete_if {|x| x.to_s.include?(7.to_s) }
     @sets.delete_if {|x| x.to_s.include?(8.to_s) }
     @sets.delete_if {|x| x.to_s.include?(9.to_s) }
-    @sets.length
+    @sets.map! {|q| q.to_s}
     @previous_guesses = []
+    @simple_simon = []
   end
 
 ######## this is a mess ##############
 
+  def deleter
+    last_guess = @previous_guesses.last
+    4.times do |i|
+    @sets.delete_if {|x| x.include?(last_guess[i]) }
+    end
+  end
+
+  #should take in a string and remove all entries in sets that do not include that number
+  def simple_selector(t)
+      new_set = []
+      last_guess = @previous_guesses.last.split("")
+      
+      last_guess.length.times do |i|
+      new_set << @sets.select {|x| x.include?(last_guess[i]) }
+
+    end
+
+  
+ 
+    @sets = new_set.flatten.uniq
+  end
+
+  def black_selector(bc)
+    new_set = []
+    last_guess = @previous_guesses.last.split("")
+
+    z = last_guess.permutation(bc).to_a
+    z.map! {|x| x.join + ("." * (4 - bc)) }
+    whites = z.map {|x| x.split('').permutation(4).to_a.uniq }
+ 
+    whites.length.times do |i|
+      whites[i].length.times do |j|
+      rx = Regexp.new(whites[i][j].join, true)
+      new_set << @sets.select {|x| rx.match(x)}
+
+    end
+    end
+   
+    @sets = new_set.flatten.uniq
+ 
+  end
+
+  def white_selector(wc)
+    
+    new_set = []
+    last_guess = @previous_guesses.last.split("")
+
+    z = last_guess.permutation(wc).to_a
+    z.map! {|x| x.join + ("." * (4 - wc)) }
+    whites = z.map {|x| x.split('').permutation(4).to_a.uniq }
+ 
+    whites.length.times do |i|
+      whites[i].length.times do |j|
+      rx = Regexp.new(whites[i][j].join, true)
+      new_set << @sets.select {|x| rx.match(x)}
+
+    end
+    end
+   
+    @sets = new_set.flatten.uniq
+  end
+
   def guessprotocol(wc, bc, turn)
-      p @sets.length
-      p @previous_guesses
-      if (@sets.length <=  2)
+p @sets.sort
+    if (@sets.length <=  2)
         next_guess = @sets.last.to_s.split("").map {|x| x.to_i }
         next_guess
       end
-     if turn == 1
-        @previous_guesses << [1,1,2,2]
-        return [1,1,2,2]
-     else
-      if(wc == 0 && bc == 0)
-        herp = @previous_guesses.last
-        4.times do |i|
-        @sets.delete_if {|x| x.to_s.include?(herp[i].to_s) }
-        end
-        next_guess = @sets.first.to_s.split("").map {|x| x.to_i }
+
+    if turn == 1
+        @previous_guesses << "1122"
+        return @previous_guesses.last
+    else
+    if wc == 0 && bc == 0
+        deleter
+        @previous_guesses << @sets.first
+        @previous_guesses.last
+    elsif wc > 0 || bc > 0
+        simple_selector(turn)
+        black_selector(bc)
+        white_selector(wc)
+        next_guess = @sets[@sets.length/2]
+        @sets.delete(@previous_guesses.last)
         @previous_guesses << next_guess
-        next_guess
-      elsif(wc + bc == 4)
-        next_guess = @previous_guesses.last.shuffle
-        #do not choose a number already in the list!!
-        @previous_guesses << next_guess
-        next_guess
-      elsif(wc + bc == 3)
-        #delete from sets if the number in sets is not included in the last guess
-        herp = @previous_guesses.last.permutation(3).to_a
-        herp.length.times do |i|
-          @sets.keep_if {|x| x.to_s.include?(herp[i].to_s) }
-        end
-        next_guess = @sets.last.to_s.split("").map {|x| x.to_i }
-        @previous_guesses << next_guess
-        next_guess
-      elsif(wc+bc == 2)
-        herp = @previous_guesses.last.permutation(2).to_a
-        herp.length.times do |i|
-          @sets.keep_if {|x| x.to_s.include?(herp[i].to_s) }
-        end
-        next_guess = @sets.last.to_s.split("").map {|x| x.to_i }
-        @previous_guesses << next_guess
-        next_guess
-        #do stuff
-      elsif(wc+bc == 1)
-        herp = @previous_guesses.last.permutation(1).to_a
-        herp.length.times do |i|
-        @sets.keep_if {|x| x.to_s.include?(herp[i].to_s) }
-        end
-        next_guess = @sets.last.to_s.split("").map {|x| x.to_i }
-        @previous_guesses << next_guess
-        next_guess
-        #do more stuff
+        @previous_guesses.last
     end
   end
 end
@@ -107,21 +138,21 @@ if choice == 'g'
   #guesser = player
 
   guesser = Human.new
-  # master = [rand(1..6), rand(1..6), rand(1..6), rand(1..6)] 
-  master = [3,6,5,5]
+  # master = [rand(1..6), rand(1..6), rand(1..6), rand(1..6)].join
+  master = "1234"
 else
   puts "please set array"
   #mastermind = player
   #guesser = cpu
   guesser = Cpu.new
-  master.map! {|x| x = gets.chomp.to_i }
+  master = gets.chomp
   p master
 end
 
 class Engine
   def self.pegcounter(mstarr, guessarr)
-    black = guessarr.each_with_index.map {|x, i| mstarr[i] == x ? "black" : x }
-    cputemp = mstarr.each_with_index.map{|x, i| black[i] == "black" ? nil : x }
+    black = guessarr.split("").each_with_index.map {|x, i| mstarr[i] == x ? "black" : x }
+    cputemp = mstarr.split("").each_with_index.map{|x, i| black[i] == "black" ? nil : x }
     white = black.each_with_index.map do |x, i| 
       if cputemp.include?(x)
         d = cputemp.index(x)
