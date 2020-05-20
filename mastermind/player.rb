@@ -1,6 +1,6 @@
 class Human
   def guessprotocol(wc, bc, turn)
-    player = ""
+    player = ''
     player << gets.chomp
     return player
   end
