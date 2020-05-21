@@ -3,10 +3,8 @@ require_relative 'cpu'
 class HardCpu < Cpu
 
   def minimax(sets, bc, wc, prev)
+    sets[sets.length/2]
   end
-
-
-
 
   def guessprotocol(wc, bc, turn)
     if (@sets.length <=  2)
@@ -26,7 +24,7 @@ class HardCpu < Cpu
         simple_selector
         strict_selector(bc)
         strict_selector(wc)
-        next_guess = @sets[@sets.length/2]
+        next_guess = minimax(@sets, bc, wc, @previous_guesses)
         @sets.delete(@previous_guesses.last)
         @previous_guesses << next_guess
         @previous_guesses.last

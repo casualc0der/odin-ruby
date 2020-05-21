@@ -31,16 +31,12 @@ class Cpu
       @sets = new_set.flatten.uniq
     end
 
-  
     def strict_selector(pegs)
-      
       new_set = []
       last_guess = @previous_guesses.last.split("")
-  
       z = last_guess.permutation(pegs).to_a
       z.map! {|x| x.join + ("." * (4 - pegs)) }
       possible_combos = z.map {|x| x.split('').permutation(4).to_a.uniq }
-   
       possible_combos.length.times do |i|
         possible_combos[i].length.times do |j|
         rx = Regexp.new(possible_combos[i][j].join, true)
@@ -49,9 +45,7 @@ class Cpu
       end
      @sets = new_set.flatten.uniq
     end
-  
-  
-  
+
     def guessprotocol(wc, bc, turn)
       if (@sets.length <=  2)
           next_guess = @sets.last.to_s.split("").map {|x| x.to_i }
@@ -77,7 +71,5 @@ class Cpu
       end
     end
   end
-  
-  
   end
   
