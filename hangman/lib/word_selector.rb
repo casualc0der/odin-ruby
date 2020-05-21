@@ -14,7 +14,9 @@ class WordSelector
   end
 
   def random
-    vetted_dic = @dictionary.words.select { |x| x.length > 5 && x.length < 12 }
+    vetted_dic = @dictionary
+                .words
+                .select { |x| x.length > 5 && x.length < 12 }
     vetted_dic[rand(vetted_dic.length)]
   end
 end
