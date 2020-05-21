@@ -32,3 +32,4 @@ while black_count != 4
   p "white = #{mastermind[:white]}"
   turn += 1
 end
+
