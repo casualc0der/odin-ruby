@@ -8,6 +8,6 @@ class Dictionary
   private
   def load
     File.foreach("./dictionary.txt") {|line|
-       @words << line}
+       @words << line.chomp}
   end
 end
