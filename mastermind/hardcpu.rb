@@ -7,7 +7,7 @@ class HardCpu < Cpu
 
 
 
-  
+
   def guessprotocol(wc, bc, turn)
     if (@sets.length <=  2)
         next_guess = @sets.last.to_s.split("").map {|x| x.to_i }
@@ -24,8 +24,8 @@ class HardCpu < Cpu
         @previous_guesses.last
     elsif wc > 0 || bc > 0
         simple_selector
-        black_selector(bc)
-        white_selector(wc)
+        strict_selector(bc)
+        strict_selector(wc)
         next_guess = @sets[@sets.length/2]
         @sets.delete(@previous_guesses.last)
         @previous_guesses << next_guess

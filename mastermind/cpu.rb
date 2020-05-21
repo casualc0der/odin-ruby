@@ -30,46 +30,23 @@ class Cpu
   
       @sets = new_set.flatten.uniq
     end
+
   
-    def black_selector(bc)
-      new_set = []
-      check_guess = @previous_guesses[-1].split("")
-      last_guess = @previous_guesses.last.split("")
-  
-  
-      z = last_guess.permutation(bc).to_a
-      z.map! {|x| x.join + ("." * (4 - bc)) }
-      blacks = z.map {|x| x.split('').permutation(4).to_a.uniq }
-   
-      blacks.length.times do |i|
-        blacks[i].length.times do |j|
-        rx = Regexp.new(blacks[i][j].join, true)
-        new_set << @sets.select {|x| rx.match(x)}
-  
-      end
-      end
-     
-      @sets = new_set.flatten.uniq
-   
-    end
-  
-    def white_selector(wc)
+    def strict_selector(pegs)
       
       new_set = []
       last_guess = @previous_guesses.last.split("")
   
-      z = last_guess.permutation(wc).to_a
-      z.map! {|x| x.join + ("." * (4 - wc)) }
-      whites = z.map {|x| x.split('').permutation(4).to_a.uniq }
+      z = last_guess.permutation(pegs).to_a
+      z.map! {|x| x.join + ("." * (4 - pegs)) }
+      possible_combos = z.map {|x| x.split('').permutation(4).to_a.uniq }
    
-      whites.length.times do |i|
-        whites[i].length.times do |j|
-        rx = Regexp.new(whites[i][j].join, true)
+      possible_combos.length.times do |i|
+        possible_combos[i].length.times do |j|
+        rx = Regexp.new(possible_combos[i][j].join, true)
         new_set << @sets.select {|x| rx.match(x)}
-  
       end
       end
-     
      @sets = new_set.flatten.uniq
     end
   
@@ -91,8 +68,8 @@ class Cpu
           @previous_guesses.last
       elsif wc > 0 || bc > 0
           simple_selector
-          black_selector(bc)
-          white_selector(wc)
+          strict_selector(bc)
+          strict_selector(wc)
           next_guess = @sets[@sets.length/2]
           @sets.delete(@previous_guesses.last)
           @previous_guesses << next_guess
