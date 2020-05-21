@@ -56,21 +56,25 @@ class Hangman
   private
 
   def game_loop
-
   while @guesses < 6
-    puts "Would you like to save the game and exit? [y/n]"
+    puts "Would you like to save the game? [y/n]"
     confirmation = gets.chomp
     if confirmation == 'y' || confirmation == 'Y'
       @serializer.serialize(self.save_game(gameid))
-      exit
-    else
+        puts "Would you like to exit the game? [y/n]"
+        confirmation = gets.chomp
+        if confirmation == 'y' || confirmation == 'Y'
+          exit
+        end
+    end
+    
     puts "please take a guess"
     guess_for_turn = gets.chomp
     #do not allow input if player has already uses a letter
-    end
     @guesses +=1 
   end
   end
+
 
   def load_game(data)
     @gameid = data['gameid']
@@ -90,6 +94,7 @@ class Hangman
                   }
   end
 end
+
 
 game = Hangman.new("Pepe")
 game.start
