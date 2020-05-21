@@ -9,16 +9,17 @@ class Donkey
     @head = 1
   end
 
-  def to_s
-    "Donkey: {legs => #{@legs}, head => #{@head} }"
+  def save_status(filename)
+    donkey = {gameid: filename, legs: @legs, head: @head }
   end
 end
 
 dopey = Donkey.new
-serializer.serialize(dopey.to_s)
+serializer.serialize(dopey.save_status('EddsGame'))
 
 file = File.read('game.json')
 data = serializer.deserialize(file)
 
-p data['Donkey']['legs']
-p data['head']
+p data.class
+p data
+
