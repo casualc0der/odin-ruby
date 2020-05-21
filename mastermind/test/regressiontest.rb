@@ -36,7 +36,7 @@ attr_reader :game
   end
   def test_win_percentage_should_be_14_percent_baseline_at_100_runs
     
-    runs = 10
+    runs = 1296
     game.game_test(runs)
     stats = game.winning_turn.select {|x| x <= 12 }.length
     assert_equal 14, ((stats.to_f / runs.to_f) * 100).to_i

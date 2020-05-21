@@ -3,6 +3,8 @@ require_relative '../player'
 require_relative '../cpu'
 require_relative '../hardcpu'
 require_relative '../engine'
+require_relative '../dataextract'
+
 
 
 class MastermindStress
@@ -24,6 +26,7 @@ class MastermindStress
     @master .map!(&:to_s)
     @games_completed = 0
     @winning_turn = []
+    @spreadsheet = Extractor.new
   end
 
   def reset_game
@@ -52,6 +55,7 @@ class MastermindStress
       reset_game
       next
       end
+      @spreadsheet.extract_info(@master, @winning_turn)
       @games_completed
     end
   end
