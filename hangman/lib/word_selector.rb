@@ -1,26 +1,20 @@
 require_relative 'dictionary'
 require 'pry'
+
 class WordSelector
   attr_reader :word_to_guess
-def initialize
-  @dictionary = Dictionary.new
-  @word_to_guess = ""
-end
 
-def specific(i)
-  @dictionary.words[i]
-end
+  def initialize(wordbook)
+    @dictionary = wordbook
+    @word_to_guess = ''
+  end
 
-def random
-  binding.pry
+  def specific(i)
+    @dictionary.words[i]
+  end
 
-  vetted_dic = @dictionary
-          .words
-          .select {|x| x.length > 5 && x.length < 12}
-  vetted_dic[rand(vetted_dic.length)]
-end
-
-
-
-
+  def random
+    vetted_dic = @dictionary.words.select { |x| x.length > 5 && x.length < 12 }
+    vetted_dic[rand(vetted_dic.length)]
+  end
 end
