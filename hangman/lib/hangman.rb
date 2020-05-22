@@ -2,7 +2,6 @@ require_relative 'serializer'
 require_relative 'word_selector'
 require_relative 'dictionary'
 require 'pry'
-
 class Hangman
   attr_accessor :gameid, :word_to_guess, :guesses, :letters_used, :user_word
 
@@ -76,6 +75,8 @@ class Hangman
       puts 'bzzz wrong!'
       @guesses += 1
       puts "You have #{6 - @guesses} incorrect guesses remaining" if guesses < 6
+      banner = File.read("./assets/hm#{@guesses}.txt")
+      puts banner
     end
   end
 
@@ -138,5 +139,8 @@ class Hangman
   end
 end
 
-game = Hangman.new('Pepe')
+
+banner = File.read("./assets/banner.txt")
+puts banner
+game = Hangman.new(Time.now)
 game.start
