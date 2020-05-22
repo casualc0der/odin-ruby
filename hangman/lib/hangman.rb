@@ -23,12 +23,6 @@ class Hangman
   end
 
   def start
-    ## implement game loop here
-
-    ## first of all ask the player if they want to load game?
-
-    ## if yes, ask the player to select the file to open
-    ## loaded_data = 
     puts "Would you like to load a game? [y/n]"
     confirmation = gets.chomp
 
@@ -37,17 +31,13 @@ class Hangman
       data = @serializer.deserialize(file)
       puts "which game would you like to load? select number"
       data.each_with_index {|x,i| p "#{i}-#{x['gameid']}"}
-      ##player chooses number 1 
       game_selection = gets.chomp.to_i
       ## catch exception
       loaded_data = data[game_selection]
-      ## override all Lvariables with data from the deserialized file
       load_game(loaded_data)
       puts "Game loaded, lets play!"
       game_loop
     else
-      #save the current status of the game to be retrieved later
-      ## this needs to go in the actual game loop!!!
       puts "Ok lets play a new game"
       game_loop
     end
@@ -57,24 +47,27 @@ class Hangman
 
   def game_loop
   while @guesses < 6
-    puts "Would you like to save the game? [y/n]"
-    confirmation = gets.chomp
-    if confirmation == 'y' || confirmation == 'Y'
-      @serializer.serialize(self.save_game(gameid))
-        puts "Would you like to exit the game? [y/n]"
-        confirmation = gets.chomp
-        if confirmation == 'y' || confirmation == 'Y'
-          exit
-        end
-    end
+    save_prompt if guesses >= 1
     
     puts "please take a guess"
     guess_for_turn = gets.chomp
     #do not allow input if player has already uses a letter
     @guesses +=1 
   end
+  puts "Game over!"
+  exit
   end
 
+  def save_prompt
+    puts "Would you like to save the game? [y/n]"
+    confirmation = gets.chomp
+    if confirmation == 'y' || confirmation == 'Y'
+      @serializer.serialize(self.save_game(gameid))
+        puts "Would you like to exit the game? [y/n]"
+        confirmation = gets.chomp
+        exit if confirmation == 'y' || confirmation == 'Y'
+    end
+  end
 
   def load_game(data)
     @gameid = data['gameid']
@@ -94,7 +87,6 @@ class Hangman
                   }
   end
 end
-
 
 game = Hangman.new("Pepe")
 game.start
