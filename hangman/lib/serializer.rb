@@ -12,17 +12,17 @@ class Serializer
   private
 
   def append_data(x)
-    file = File.read('game.json')
+    file = File.read('./assets/game.json')
     json_array = deserialize(file)
     json_array << x
     data = JSON.dump(json_array)
-    File.write('game.json', data, mode: 'w')
+    File.write('./assets/game.json', data, mode: 'w')
   end
 
   def new_file_create(x)
     json_array = []
     json_array << x
     data = JSON.dump(json_array)
-    File.write('game.json', data, mode: 'w')
+    File.write('./assets/game.json', data, mode: 'w')
   end
 end

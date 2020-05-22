@@ -20,13 +20,7 @@ class Hangman
     confirmation = gets.chomp
 
     if confirmation == 'y' || confirmation == 'Y'
-      file = File.read('game.json')
-      data = @serializer.deserialize(file)
-      puts 'which game would you like to load? select number'
-      data.each_with_index { |x, i| p "#{i}-#{x['gameid']}" }
-      game_selection = gets.chomp.to_i ## catch exception
-      loaded_data = data[game_selection]
-      load_game(loaded_data)
+      load_game(select_file_to_load)
       puts 'Game loaded, lets play!'
       game_loop(true)
     else
@@ -55,6 +49,23 @@ class Hangman
     exit
   end
 
+  def select_file_to_load
+    loop do
+      begin
+        file = File.read('./assets/game.json')
+        data = @serializer.deserialize(file)
+        puts 'which game would you like to load? select number'
+        data.each_with_index { |x, i| p "#{i}-#{x['gameid']}" }
+        puts 'Please enter the file to load'
+        input = gets.chomp
+        return data[sanitize_num(input, data)]
+
+      rescue EncodingError => e
+        puts e.message
+        next
+      end
+    end
+  end
   def win_checker?
     @word_to_guess == @user_word.join
   end
@@ -97,11 +108,17 @@ class Hangman
 
   def sanitize_char(input)
     raise EncodingError, 'Please enter 1 letter' if input.length != 1
-    raise EncodingError, 'Please enter a letter' unless input.match(/\D/)
+    raise EncodingError, 'Please enter a letter' unless input.match(/[a-zA-Z]/)
     if @letters_used.include?(input)
       raise EncodingError, 'You have used that letter!'
     end
     input.downcase
+  end
+
+  def sanitize_num(input, data)
+    raise EncodingError, 'Please enter a number' unless input.match(/\d/)
+    raise EncodingError, 'Please enter a number in range' if input.to_i >= data.length
+    input.to_i
   end
 
   def display_used_letters

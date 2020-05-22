@@ -9,6 +9,6 @@ class Dictionary
   private
 
   def load
-    File.foreach('./dictionary.txt') { |line| @words << line.chomp }
+    File.foreach('./assets/dictionary.txt') { |line| @words << line.chomp }
   end
 end
