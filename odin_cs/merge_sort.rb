@@ -1,6 +1,4 @@
-class Sorter
-  # with inspiration from https://www.geeksforgeeks.org/merge-sort/
-  # divide
+class Sorter # divide # with inspiration from https://www.geeksforgeeks.org/merge-sort/
   def merge_sort(arr)
     return arr unless arr.size > 1
     mid = arr.size / 2
@@ -23,7 +21,7 @@ class Sorter
         a.shift
       end
     end
-    
+
     until a.empty?
       tmp_arr << a.first
       a.shift
