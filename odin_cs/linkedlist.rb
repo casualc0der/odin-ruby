@@ -13,11 +13,9 @@ class LinkedList
     @tail = nil
   end
 
-  #add node to end of the list
   def append(value)
     node = Node.new(value)
 
-    #if there is no head node, we can assume that the list is empty. Hence we set the head/tail to point to the same node
     if @head.nil?
       set_head_and_tail(node)
     else
@@ -33,7 +31,6 @@ class LinkedList
     @tail = node
   end
 
-  #add node to the start of the list
   def prepend(value)
     node = Node.new(value)
     if @head.nil?
