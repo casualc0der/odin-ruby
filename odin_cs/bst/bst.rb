@@ -7,7 +7,9 @@ class Tree
     def initialize(arr)
         @root = build_tree(arr)
     end
- 
+
+    #todo 
+
     def find_min(node)
         current_node = node
         while !current_node.left.nil?
@@ -23,35 +25,7 @@ class Tree
                 current_node.left = nil
             end
         end
-    end
-
-    def delete_with_2_children(parent, node)
-        smallest_node = find_min(node.right)
-        smallest_node.right = node.right
-        smallest_node.left = node.left
-        deref_protocol(node.right, smallest_node)
-        parent.right = smallest_node
-    end
-
-    def delete_nodes(current_node, parent_node)
-
-        left_child = current_node.left.nil?
-        right_child = current_node.right.nil?
-        p_node_checker = nil
-        parent_node.right.nil? ? nil : p_node_checker = parent_node.right.data
-        if left_child && right_child
-            p_node_checker == current_node.data ? parent_node.right = nil : parent_node.left = nil
-
-        elsif left_child && !right_child
-            p_node_checker == current_node.data ? parent_node.right = current_node.right : 
-                                                  parent_node.left = current_node.right
-        elsif !left_child && right_child
-            p_node_checker == current_node.data ? parent_node.right = current_node.left : 
-                                                parent_node.left = current_node.left
-        elsif !left_child && !right_child
-            delete_with_2_children(parent_node.right, current_node)
-        end
-
+ 
     end
 
     def delete(value)
@@ -67,12 +41,41 @@ class Tree
             if direction == 1 && !current_node.left.nil?
                     parent_node = current_node
                     current_node = current_node.left
+                   
             elsif direction == -1 && !current_node.right.nil?
                     parent_node = current_node
                     current_node = current_node.right
+                #node to be deleted /cry
             elsif direction == 0
-                    delete_nodes(current_node, parent_node)
-                    located = true
+                left_child = current_node.left.nil?
+                right_child = current_node.right.nil?
+                p_node_checker = nil
+                parent_node.right.nil? ? nil : p_node_checker = parent_node.right.data
+                if left_child && right_child
+                    p_node_checker == current_node.data ? parent_node.right = nil : parent_node.left = nil
+
+                elsif left_child && !right_child
+                    p_node_checker == current_node.data ? parent_node.right = current_node.right : 
+                                                          parent_node.left = current_node.right
+                elsif !left_child && right_child
+                    p_node_checker == current_node.data ? parent_node.right = current_node.left : 
+                                                        parent_node.left = current_node.left
+                elsif !left_child && !right_child
+                    
+                    smallest_node = find_min(current_node.right)
+                    
+                    smallest_node.right = current_node.right
+                  
+                    smallest_node.left = current_node.left
+                   
+                    deref_protocol(current_node.right, smallest_node)
+                    parent_node.right = smallest_node
+                   
+
+
+                end
+                
+                located = true
             end
         end
     end
@@ -173,4 +176,4 @@ x.insert(20)
 x.delete(19)
 p x.root
 
-x.find(101019)
+x.find(20)
