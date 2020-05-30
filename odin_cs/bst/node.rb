@@ -6,8 +6,11 @@ include Comparable
         @left = nil
         @right = nil
     end
-    def <=>(other)
-        @data <=> other.data
+    def <=>(node)
+        value = nil
+        node.class == Node ? value = node.data : value = node
+
+        @data <=> value
     end
 end
 
